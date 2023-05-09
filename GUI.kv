@@ -1,0 +1,95 @@
+#:import Factory kivy.factory.Factory
+
+<MyPopup@Popup>
+	auto_dismiss: True
+	size_hint: 0.9, 0.9
+
+	title: "Instrukcja"
+
+	BoxLayout:
+		orientation: "vertical"
+		size: root.width, root.height
+		Image:
+            source: 'GUI.jpg'
+            size: self.texture_size
+<File>
+	title: "Wybierz plik mp4"
+    size_hint: .9, .9
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: "vertical"
+        FileChooser:
+            id: filechooser
+            FileChooserIconLayout
+
+        BoxLayout:
+            size_hint: (1, 0.1)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            spacing: 20
+            Button:
+                text: "Anuluj"
+                on_release: root.dismiss()
+            Button:
+                text: "Załaduj"
+                on_release: root.load(filechooser.selection)
+                id: ldbtn
+                disabled: True if filechooser.selection==[] else False
+
+<MyLayout>
+    id: my_widget
+	FloatLayout:
+		size: root.width, root.height
+        Spinner:
+            id: spinner_id
+            text: "Wybierz modalność"
+            pos_hint: {"x":0.1 ,"y":0.8}
+            size_hint: 0.2, 0.1
+            values: ["RGB","Termowizja"]
+		RoundedButton:
+			text: "i"
+			color: 0,0,0,1
+			font_size: 16
+			pos_hint: {"x":0.9 ,"y":0.9}
+			size_hint: 0.05, 0.05
+			on_release: Factory.MyPopup().open()
+		MyButton:
+		    text: "Wczytaj plik"
+		    pos_hint: {"x":0.4 ,"y":0.8}
+            on_press: root.open_popup()
+		MyButton:
+		    text: "Start"
+		    pos_hint: {"x":0.4,"y":0.7}
+		    on_press: root.run()
+		MyButton:
+		    text: "Pokaż wyniki"
+		    pos_hint: {"x":0.7 ,"y":0.7}
+		Videos:
+		    id: video1
+		    source: ""
+		    state: 'play'
+            pos_hint: {"x":0 ,"y":0.1}
+			size_hint: 0.5, 0.5
+			volume: 0
+		Videos:
+		    id: video2
+		    source: ""
+		    state: 'play'
+            pos_hint: {"x":0.51 ,"y":0.1}
+			size_hint: 0.5, 0.5
+			volume: 0
+
+<MyButton@Button>
+    font_size: 16
+    size_hint: (0.2,0.1)
+
+<RoundedButton@Button>
+    background_color:(0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (211/255,211/255,211/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [360]
